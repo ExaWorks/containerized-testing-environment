@@ -1,0 +1,42 @@
+version: "3.4"
+
+services:
+
+  flux-psij:
+    image: exaworks/flux-psij
+    container_name: flux-psij
+    hostname: flux-psij
+    build:
+      context: ../../../
+      dockerfile: ./psij/flux/docker/flux-psij.dockerfile
+    networks:
+      - flux-network
+    volumes:
+      - flux-system:/etc/flux/system/
+      - flux-workdir:/home/fluxuser/workdir/
+      - ./bootstrap.toml:/home/fluxuser/bootstrap.toml
+    command: /bin/bash
+    tty: true
+
+  flux-sched:
+    image: fluxrm/flux-sched:latest
+    container_name: flux-sched
+    hostname: flux-sched
+    networks:
+      - flux-network
+    volumes:
+      - flux-system:/etc/flux/system/
+      - flux-workdir:/home/fluxuser/workdir/
+      - ./bootstrap.toml:/home/fluxuser/bootstrap.toml
+    command: /bin/bash -c "flux broker --config-path=/home/fluxuser"
+    tty: true
+
+networks:
+  flux-network:
+    name: flux-network
+
+volumes:
+  flux-system:
+    name: flux-system
+  flux-workdir:
+    name: flux-workdir

@@ -1,0 +1,11 @@
+[bootstrap]
+
+curve_cert = "/etc/flux/system/curve.cert"
+
+[[bootstrap.hosts]]
+host = "flux-psij"
+bind = "tcp://*:9001"
+connect = "tcp://%h:9001"
+[[bootstrap.hosts]]
+host = "flux-sched"
+
