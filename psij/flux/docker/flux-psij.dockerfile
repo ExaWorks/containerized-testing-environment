@@ -3,13 +3,14 @@ FROM fluxrm/flux-sched:latest
 ARG PYTHON_VERSION=3.7
 
 # configuration:
-#   https://flux-framework.readthedocs.io/en/latest/adminguide.html#configuring-the-flux-system-instance
+#   https://flux-framework.readthedocs.io/en/latest/guides/admin-guide.html#configuring-the-flux-system-instance
 #   https://flux-framework.readthedocs.io/projects/flux-core/en/latest/man5/flux-config-bootstrap.html
 RUN sudo mkdir -p /etc/flux/system && \
     flux broker sudo -u fluxuser flux keygen /tmp/curve.cert && \
     sudo mv /tmp/curve.cert /etc/flux/system/
 
-RUN sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev  \
+RUN sudo apt-get -y update && \
+    sudo apt-get -y install build-essential zlib1g-dev libncurses5-dev libgdbm-dev \
     libnss3-dev libssl-dev libreadline-dev libffi-dev
 
 COPY scripts/install-python.sh /home/fluxuser/
